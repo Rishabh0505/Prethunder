@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang='en'>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+<head>
+
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="weather, world, Prethunder, forecast, thunder, current">
+  <meta name="description"
+    content="Get current weather, hourly forecast, daily forecast for 16 days, and 3-hourly forecast 5 days for your city. Historical weather data for 40 years back for any coordinate. Helpful stats, graphics, and this day in history charts are available for your reference. Interactive maps show precipitation, clouds, pressure, wind around your location.">
+  <meta property="title" content="Сurrent weather and forecast" />
+  <link rel="shortcut icon" href="themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+  <link rel="icon" href="themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16"
+    type="image/png">
+  <link rel="icon" href="themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32"
+    type="image/png">
+  <link rel="icon" href="themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60"
+    type="image/png">
+  <title>Сurrent weather and forecast - Prethunder</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31601618-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-31601618-1');
+  </script>
+  <script src="../code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ="
+    crossorigin="anonymous"></script>
+  <script src="../cdn.polyfill.io/v2/polyfill.min9e24.js?features=Array.from,Array.assign,fetch&amp;flags=always,gated">
+  </script>
+  <script src='themes/openweathermap/assets/js/bundle_owm_preload.c31872127471c475ade1.js'></script>
+  <link href='themes/openweathermap/assets/css/bundle_owm_styles.c31872127471c475ade1.css' rel="stylesheet">
+  <link href='themes/openweathermap/assets/css/stick_footer_panel.c31872127471c475ade1.css' rel="stylesheet">
+
+  <link href="../maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic' rel="stylesheet">
+  <link href='themes/openweathermap/assets/css/new_owm_styles.522b0c2ecd513644.css' rel="stylesheet">
+
+
+  <link href="../maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic' rel="stylesheet">
+
+</head>
+
+<body class="body-orange" onClick="closePopUps()">
+  <style>
+    .banner_stripe {
+      width: 100%;
+      height: 80px;
+      background-color: #1c1c1e;
+      display: none;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      font-family: Roboto, sans-serif;
+      position: relative;
+    }
+
+    .banner_icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 15px;
+      background-size: 64px 64px;
+      margin: 8px;
+    }
+
+    .google_button {
+      /* background-color: #3e83f8; */
+      background-color: #2196f3;
+      height: 36px;
+      border: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .26);
+      box-sizing: border-box;
+      color: #fff !important;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: .5px;
+      line-height: 24px;
+      margin: 6px;
+      min-width: 40px;
+      outline: 0;
+      padding: 10px 14px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1);
+      white-space: nowrap;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .google_button:hover,
+    .google_button:focus {
+      text-decoration: none;
+    }
+
+    .smartbanner__exit {
+      position: absolute;
+      top: calc(50% - 6px);
+      left: 12px;
+      display: block;
+      margin: 0;
+      width: 12px;
+      height: 12px;
+      border: 0;
+      text-align: center;
+    }
+
+    .smartbanner__exit::before,
+    .smartbanner__exit::after {
+      position: absolute;
+      width: 1px;
+      height: 12px;
+      content: ' ';
+      background: #767676;
+    }
+
+    .smartbanner__exit::before {
+      transform: rotate(45deg);
+    }
+
+    .smartbanner__exit::after {
+      transform: rotate(-45deg);
+    }
+  </style>
+
+  <div id="banner_android" class="banner_stripe">
+    <div style="display: flex; flex-direction: row; align-items: center; margin-left: 18px;">
+      <a class="smartbanner__exit" onClick="bannerClose()"></a>
+      <img src="themes/openweathermap/assets/img/mobile_app/android_icon.png" class="banner_icon" />
+      <div>
+        <p style="font-size: 14px; color: #ffffff; margin: 0;">OpenWeather</p>
+        <p style="font-size: 12px; margin: 0; color: #96969c;">OpenWeather Ltd.</p>
+        <p style="font-size: 12px; margin: 0; color: #96969c;">GET - on Google Play</p>
+      </div>
+    </div>
+    <a class="google_button" style="font-size: 16px;"
+      href="https://play.google.com/store/apps/details?id=uk.co.openweather"
+      onclick="ga('send', 'event', 'app', 'click', 'androidTopBanner');">VIEW</a>
+  </div>
+
+  <script>
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function setCookie(name, value) {
+      var expires = new Date()
+      expires.setTime(expires.getTime() + (5 * 1000 * 60 * 60 * 24))
+      document.cookie = name + '=' + escape(value) + '; expires=' + expires.toGMTString() + '; path=/'
+    }
+
+    function bannerClose() {
+      document.getElementById("banner_android").style.display = "none";
+      setCookie("owm_banner_android_closed", true)
+    }
+
+    document.onload = function () {
+      if ((document.cookie.indexOf("owm_banner_android_closed") === -1) && /Android/i.test(window.navigator
+        .userAgent)) {
+        document.getElementById("banner_android").style.display = 'flex';
+      }
+    }()
+  </script>
+  <ul id="header-website" onClick="toggleMenu(event)">
+    <li class="logo">
+
+    </li>
+    <li class="hamburger">
+      <img src="themes/openweathermap/assets/img/owm_icons/icon_hamburger.svg" />
+    </li>
+    <li>
+      <form role="search" id="nav-search-form" action="https://openweathermap.org/find" method="get">
+        <input type="text" id="q" name="q" placeholder="Weather in your city">
+        <input type="submit" style="display:none;">
+      </form>
+    </li>
+
+
+    <li>
+      <a href="/" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Maps</a>
+    </li>
+
+    <li>
+      <a href="feedback.html" class="market-place"
+        onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'marketplace']);">Feedback</a>
+    </li>
+    <li class="user-sign-in" id="sign_in"><a href="home/Prethunder3/home.openweathermap.org/users/sign_in.html">Sign
+        in</a></li>
+    <li class="support-item">
+
+    </li>
+  </ul>
+
+  <div id="notes_block"></div>
+  <main class="wrapper">
+    <style rel="stylesheet">
+      p {
+        font-size: 15px;
+      }
+
+      .logos {
+        margin: 0 auto;
+        height: 60px;
+        white-space: nowrap;
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+      }
+
+      .logos img {
+        height: 60px;
+        display: inline-block;
+        padding-left: 970px;
+        animation: logoScroll 50s linear infinite;
+      }
+
+      .logos2 img {
+        animation-delay: 25s;
+      }
+
+
+      @keyframes logoScroll {
+        0% {
+          transform: translate(0, 0);
+        }
+
+        100% {
+          transform: translate(-5350px, 0);
+        }
+      }
+
+      #weather-widget.section {
+        overflow: revert;
+      }
+
+      .section-content {
+        max-width: 100%;
+      }
+
+      @media screen and (min-width: 900px) {
+        .section-content {
+          max-width: 900px;
+        }
+      }
+
+      .stats>div {
+        background-color: transparent;
+        border: 3px solid #ffffff;
+      }
+
+      .table-one-call {
+        border-collapse: collapse;
+      }
+
+      .table-one-call th {
+        color: #78CBBF;
+        text-align: left;
+      }
+
+      .table-one-call td {
+        border-bottom: 1px solid #EB6E4B;
+      }
+
+      .table-one-call td,
+      .table-one-call th {
+        padding: 2pt 0;
+      }
+
+      .table-one-call td:first-child {
+        width: 200px;
+      }
+
+      .api-icons {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .api-icons>a {
+        grid-column: span 2;
+      }
+
+      .api-icons>a:nth-child(4) {
+        grid-column: 2 / 4;
+      }
+
+      .api-icons>a:last-child {
+        grid-column: 4 / 6;
+      }
+
+      .agro-img {
+        background: url('themes/openweathermap/assets/img/landing/agro-field.jpg') no-repeat;
+        background-size: cover;
+      }
+
+      .agro-img div {
+        padding-top: 24pt;
+        padding-bottom: 24pt;
+      }
+
+      .weather-map-img {
+        background: url('themes/openweathermap/assets/img/Open-weather-main-page.png') no-repeat;
+        background-size: cover;
+      }
+
+      .stretch-left {
+        align-self: stretch;
+        margin: -32pt -8pt;
+      }
+
+      .wrapper {
+        padding-top: 0;
+      }
+
+      .main-section {
+        padding-top: 20px;
+        display: none;
+      }
+
+      .main-section-desktop {
+        display: none;
+        flex-direction: row;
+      }
+
+      @media (min-width: 768px) {
+        .marquee img {
+          display: inline-block;
+          max-height: 40pt;
+          max-width: 88pt;
+        }
+
+        .main-section {
+          display: grid;
+        }
+
+        .main-section-desktop {
+          display: flex;
+        }
+
+        .stretch-left {
+          margin-left: -250px;
+        }
+
+        .api-icons {
+          grid-template-columns: repeat(5, 1fr);
+        }
+
+        .api-icons>a,
+        .api-icons>a:nth-child(4),
+        .api-icons>a:last-child {
+          grid-column: auto;
+        }
+
+        .mobile_badge {
+          height: 40pt;
+        }
+      }
+    </style>
+
+
+    <div class="section main-section">
+
+      <h1><span class="orange-text">Prethunder</span><br>Web App</h1>
+      <p>A scientific yet simple approach to weather forecast. Free. No ads.</p>
+
+
+
+    </div>
+
+    <div id="weather-widget"></div>
+
+    <div class="section grey-background" style="min-height: 130px;">
+      <div class="section-content mobile-padding" style="position: relative; min-height: 60px;">
+
+      </div>
+
+
+      <div class="section orange-background white-text">
+        <div class="section-content grid-container mobile-padding">
+
+          <div class="grid-container api-icons">
+            <a href="/" class="stats white-text">
+              <div>
+                <img src="themes/openweathermap/assets/img/landing/icon-1.png" />
+              </div>
+              <h3>current<br />weather</h3>
+              <span>(current)</span>
+            </a>
+            <a href="/" class="stats white-text">
+              <div>
+                <img src="themes/openweathermap/assets/img/landing/icon-2.png" />
+              </div>
+              <h3>hourly<br />forecast</h3>
+              <span>(4 days)</span>
+            </a>
+            <a href="/" class="stats white-text">
+              <div>
+                <img src="themes/openweathermap/assets/img/landing/icon-3.png" />
+              </div>
+              <h3>daily<br />forecast</h3>
+              <span>(16 days)</span>
+            </a>
+            <a href="/" class="stats white-text">
+              <div>
+                <img src="themes/openweathermap/assets/img/landing/icon-4.png" />
+              </div>
+              <h3>climatic<br />forecast</h3>
+              <span>(30 days)</span>
+            </a>
+            <a href="/" class="stats white-text">
+              <div>
+                <img src="themes/openweathermap/assets/img/landing/icon-5.png" />
+              </div>
+              <h3>historical<br />weather</h3>
+              <span>(1 month, 1 year)</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+      <script src="themes/openweathermap/assets/vendor/owm/js/weather-widget-new.2cf40276266129f0d7c2a1ece288ef.js">
+      </script>
+      <div class="container">
+        <div class="row">
+
+
+</body>
+
+</html>
